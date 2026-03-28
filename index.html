@@ -15,54 +15,84 @@
         }
 
         * { box-sizing: border-box; outline: none; }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--creme); color: var(--texto); margin: 0; display: flex; min-height: 100vh; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--creme); color: var(--texto); margin: 0; min-height: 100vh; }
 
         /* Login */
         #login-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: var(--bordo); z-index: 9999; display: flex; 
-            align-items: center; justify-content: center; color: white;
+            align-items: center; justify-content: center; color: white; padding: 20px;
         }
         .login-card { 
             background: white; padding: 40px; border-radius: 20px; 
             color: var(--texto); width: 100%; max-width: 400px; text-align: center;
         }
 
-        #app-content { display: none; width: 100%; }
+        #app-content { display: none; flex-direction: column; width: 100%; }
         
-        nav { width: 260px; background: var(--bordo); color: white; padding: 40px 20px; position: fixed; height: 100%; z-index: 100; }
+        /* Navigation Responsiva */
+        #mobile-header { 
+            display: none; background: var(--bordo); color: white; 
+            padding: 15px; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 101;
+        }
+
+        nav { 
+            width: 260px; background: var(--bordo); color: white; 
+            padding: 40px 20px; position: fixed; height: 100%; z-index: 100; 
+            transition: transform 0.3s ease;
+        }
         .brand h1 { font-family: 'Playfair Display', serif; font-size: 1.5rem; text-align: center; margin-bottom: 40px; }
         
         nav ul { list-style: none; padding: 0; }
         nav li { padding: 15px; margin-bottom: 5px; cursor: pointer; border-radius: 10px; transition: 0.3s; display: flex; align-items: center; gap: 12px; }
         nav li:hover, nav li.active { background: rgba(255,255,255,0.1); }
 
-        main { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
+        /* Main Content Responsivo */
+        main { margin-left: 260px; padding: 40px; transition: 0.3s; }
         .section { display: none; animation: fadeIn 0.3s ease; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .grid-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+        /* Grids e Cards */
+        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .card-bi { background: white; padding: 20px; border-radius: 15px; border-bottom: 4px solid var(--bordo); box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
         .card-bi h3 { font-size: 0.7rem; color: #888; text-transform: uppercase; margin: 0; }
         .card-bi p { font-size: 1.2rem; font-weight: 700; margin-top: 5px; }
 
-        .crm-box { background: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
+        .crm-box { background: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 5px 15px rgba(0,0,0,0.02); overflow-x: auto; }
         .flex-row { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
         .input-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 140px; }
         
-        input, select { padding: 10px; border: 1px solid var(--borda); border-radius: 8px; font-family: inherit; }
-        .btn { background: var(--bordo); color: white; border: none; padding: 12px 22px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        input, select { padding: 10px; border: 1px solid var(--borda); border-radius: 8px; font-family: inherit; font-size: 14px; }
+        .btn { background: var(--bordo); color: white; border: none; padding: 12px 22px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; }
         .btn:hover { opacity: 0.9; }
         .btn-alt { background: #444; }
         .btn-pdf { background: #2980b9; }
-        .btn-save { background: var(--receita); }
 
-        table { width: 100%; border-collapse: collapse; }
+        /* Tabelas Mobile */
+        .table-container { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
         th { text-align: left; padding: 12px; background: #fcfcfc; color: #999; font-size: 0.75rem; border-bottom: 1px solid #eee; }
         td { padding: 12px; border-top: 1px solid #f8f8f8; font-size: 0.85rem; }
 
         .status-select { color: white; font-weight: bold; border: none; padding: 5px; border-radius: 5px; cursor: pointer; }
+
+        /* Media Queries para Mobile */
+        @media (max-width: 992px) {
+            nav { transform: translateX(-100%); width: 240px; }
+            nav.open { transform: translateX(0); }
+            main { margin-left: 0; padding: 20px; }
+            #mobile-header { display: flex; }
+            .grid-stats { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .grid-stats { grid-template-columns: 1fr; }
+            .flex-row { flex-direction: column; align-items: stretch; }
+            .btn { width: 100%; }
+            .login-card { padding: 25px; }
+        }
     </style>
 </head>
 <body>
@@ -71,13 +101,18 @@
     <div class="login-card">
         <h2 style="font-family: 'Playfair Display'; color: var(--bordo);">Studio Florescer</h2>
         <input type="password" id="pass-input" placeholder="Senha de acesso" onkeypress="handleLogin(event)">
-        <button class="btn" style="width:100%" onclick="checkLogin()">Entrar</button>
+        <button class="btn" style="width:100%; margin-top: 15px;" onclick="checkLogin()">Entrar</button>
         <p id="login-err" style="color:var(--despesa); font-size: 0.8rem; margin-top: 10px; display: none;">Senha incorreta!</p>
     </div>
 </div>
 
 <div id="app-content">
-    <nav>
+    <header id="mobile-header">
+        <span style="font-family: 'Playfair Display'; font-weight: bold;">Studio Florescer</span>
+        <button class="btn" onclick="toggleMenu()" style="padding: 5px 15px;">☰ Menu</button>
+    </header>
+
+    <nav id="sidebar">
         <div class="brand"><h1>Studio Florescer</h1></div>
         <ul>
             <li class="active" onclick="show('financeiro')">📊 Financeiro & BI</li>
@@ -96,15 +131,15 @@
                 <div class="flex-row">
                     <div class="input-group"><label>De:</label><input type="date" id="filtro-inicio" onchange="renderAll()"></div>
                     <div class="input-group"><label>Até:</label><input type="date" id="filtro-fim" onchange="renderAll()"></div>
-                    <div class="input-group" style="flex: 0.5;"><button class="btn btn-alt" onclick="limparFiltros()">Limpar Filtros</button></div>
-                    <div class="input-group" style="flex: 0.5;"><button class="btn btn-pdf" onclick="exportFinanceiroPDF()">PDF Financeiro</button></div>
+                    <button class="btn btn-alt" onclick="limparFiltros()">Limpar</button>
+                    <button class="btn btn-pdf" onclick="exportFinanceiroPDF()">PDF</button>
                 </div>
             </div>
 
             <div class="grid-stats">
                 <div class="card-bi"><h3>Faturamento</h3><p id="bi-receita">R$ 0,00</p></div>
                 <div class="card-bi"><h3>Despesas</h3><p id="bi-despesa" style="color:var(--despesa)">R$ 0,00</p></div>
-                <div class="card-bi"><h3>Lucro Líquido</h3><p id="bi-lucro">R$ 0,00</p></div>
+                <div class="card-bi"><h3>Lucro</h3><p id="bi-lucro">R$ 0,00</p></div>
                 <div class="card-bi" style="background: #fffafa;"><h3>🏆 Top Categoria</h3><p id="bi-top">-</p></div>
             </div>
 
@@ -127,52 +162,53 @@
             </div>
 
             <div class="crm-box" style="padding:0">
-                <table id="table-fin"><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Valor</th><th>Ações</th></tr></thead><tbody id="lista-fin"></tbody></table>
+                <div class="table-container">
+                    <table id="table-fin"><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Valor</th><th>Ações</th></tr></thead><tbody id="lista-fin"></tbody></table>
+                </div>
             </div>
         </section>
 
         <section id="presenca" class="section">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 style="font-family: 'Playfair Display';">Controle de Frequência</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px;">
+                <h2 style="font-family: 'Playfair Display'; margin: 0;">Frequência</h2>
                 <button class="btn btn-pdf" onclick="exportFrequenciaPDF()">PDF Reposições</button>
             </div>
-            <div class="crm-box">
+            <div class="crm-box" style="margin-top: 20px;">
                 <div class="flex-row">
-                    <div class="input-group"><label>Aluno</label><input type="text" id="p-nome" placeholder="Nome do aluno"></div>
-                    <div class="input-group"><label>Data da Aula</label><input type="date" id="p-data"></div>
+                    <div class="input-group"><label>Aluno</label><input type="text" id="p-nome" placeholder="Nome"></div>
+                    <div class="input-group"><label>Data</label><input type="date" id="p-data"></div>
                     <button class="btn" onclick="addPresenca()">Registrar</button>
                 </div>
             </div>
             <div class="crm-box" style="padding:0">
-                <table id="table-pres"><thead><tr><th>Data</th><th>Aluno</th><th>Status</th><th>Reposição / Obs</th><th>Ação</th></tr></thead><tbody id="corpo-presenca"></tbody></table>
+                <div class="table-container">
+                    <table id="table-pres"><thead><tr><th>Data</th><th>Aluno</th><th>Status</th><th>Reposição / Obs</th><th>Ação</th></tr></thead><tbody id="corpo-presenca"></tbody></table>
+                </div>
             </div>
         </section>
 
         <section id="agenda" class="section">
             <h2 style="font-family: 'Playfair Display';">Agenda</h2>
-            <div id="grid-agenda" style="display:grid; grid-template-columns: 80px repeat(5,1fr); gap:1px; background:#ddd; border-radius: 10px; overflow: hidden;"></div>
+            <div class="table-container">
+                <div id="grid-agenda" style="display:grid; grid-template-columns: 80px repeat(5,160px); gap:1px; background:#ddd; border-radius: 10px;"></div>
+            </div>
         </section>
 
         <section id="backup" class="section">
-            <h2 style="font-family: 'Playfair Display';">Configurações e Segurança</h2>
-            
+            <h2 style="font-family: 'Playfair Display';">Configurações</h2>
             <div class="crm-box">
-                <h3>Trocar Senha de Acesso</h3>
+                <h3>Segurança</h3>
                 <div class="flex-row">
-                    <div class="input-group"><label>Nova Senha</label><input type="password" id="new-pass-1" placeholder="Mínimo 4 caracteres"></div>
-                    <button class="btn" onclick="updatePassword()">Salvar Nova Senha</button>
+                    <div class="input-group"><input type="password" id="new-pass-1" placeholder="Nova Senha"></div>
+                    <button class="btn" onclick="updatePassword()">Atualizar Senha</button>
                 </div>
             </div>
-
             <div class="crm-box">
-                <h3>Gerenciamento de Dados (Backup)</h3>
-                <p style="font-size: 0.85rem; color: #666;">Exporte seus dados regularmente para evitar perdas ou importe um arquivo salvo anteriormente.</p>
-                <div class="flex-row" style="margin-top: 15px;">
-                    <button class="btn btn-alt" onclick="exportBackup()">📥 Exportar Dados (.json)</button>
-                    
-                    <label class="btn btn-save" style="cursor:pointer;">
-                        📤 Importar Dados (.json)
-                        <input type="file" id="importFile" hidden onchange="importBackup(event)" accept=".json">
+                <h3>Dados</h3>
+                <div class="flex-row">
+                    <button class="btn btn-alt" onclick="exportBackup()">📥 Exportar</button>
+                    <label class="btn btn-pdf" style="cursor:pointer;">
+                        📤 Importar <input type="file" id="importFile" hidden onchange="importBackup(event)" accept=".json">
                     </label>
                 </div>
             </div>
@@ -184,7 +220,8 @@
     const DEFAULT_PASS = "1234";
     let db = JSON.parse(localStorage.getItem('florescer_full_db')) || { financeiro: [], presenca: [], agenda: {} };
 
-    // --- SEGURANÇA ---
+    function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); }
+
     function checkLogin() {
         const input = document.getElementById('pass-input').value;
         const saved = localStorage.getItem('florescer_pass') || DEFAULT_PASS;
@@ -197,34 +234,27 @@
             renderAll();
         } else { document.getElementById('login-err').style.display = 'block'; }
     }
+    
     function handleLogin(e) { if(e.key === "Enter") checkLogin(); }
     function logout() { sessionStorage.removeItem('isLoggedIn'); location.reload(); }
+
     function updatePassword() {
         const p = document.getElementById('new-pass-1').value;
-        if(p.length > 3) { localStorage.setItem('florescer_pass', p); alert("Senha alterada com sucesso!"); }
-        else { alert("A senha deve ter pelo menos 4 caracteres."); }
+        if(p.length > 3) { localStorage.setItem('florescer_pass', p); alert("Senha alterada!"); }
     }
 
-    // --- FINANCEIRO ---
     function addFin() {
         const valor = parseFloat(document.getElementById('f-valor').value);
         const dataRaw = document.getElementById('f-data').value;
         if(!valor || !dataRaw) return alert("Preencha data e valor!");
-        
         db.financeiro.unshift({
-            id: Date.now(),
-            data: dataRaw,
-            desc: document.getElementById('f-desc').value || "Sem descrição",
-            tipo: document.getElementById('f-tipo').value,
-            cat: document.getElementById('f-cat').value,
-            valor: valor
+            id: Date.now(), data: dataRaw, desc: document.getElementById('f-desc').value || "Sem descrição",
+            tipo: document.getElementById('f-tipo').value, cat: document.getElementById('f-cat').value, valor: valor
         });
         save();
-        document.getElementById('f-desc').value = '';
-        document.getElementById('f-valor').value = '';
+        document.getElementById('f-desc').value = ''; document.getElementById('f-valor').value = '';
     }
 
-    // --- FREQUÊNCIA ---
     function addPresenca() {
         const nome = document.getElementById('p-nome').value;
         const data = document.getElementById('p-data').value;
@@ -239,110 +269,73 @@
         if(item) { item[campo] = valor; saveLocal(); if(campo === 'status') renderAll(); }
     }
 
-    // --- RENDERIZAÇÃO E BI ---
     function renderAll() {
         const inicio = document.getElementById('filtro-inicio').value;
         const fim = document.getElementById('filtro-fim').value;
-
-        // BI e Financeiro
         const lista = document.getElementById('lista-fin');
         lista.innerHTML = '';
-        let r=0, d=0;
-        let cats = {};
+        let r=0, d=0; let cats = {};
 
         db.financeiro.forEach(f => {
             if((inicio && f.data < inicio) || (fim && f.data > fim)) return;
-
             if(f.tipo === 'receita') {
                 r += f.valor;
                 cats[f.cat] = (cats[f.cat] || 0) + f.valor;
             } else d += f.valor;
-
             const dataFormat = f.data.split('-').reverse().join('/');
-            lista.innerHTML += `<tr>
-                <td>${dataFormat}</td>
-                <td>${f.desc}</td>
-                <td><span style="color:${f.tipo==='receita'?'green':'red'}">${f.cat}</span></td>
-                <td>R$ ${f.valor.toFixed(2)}</td>
-                <td><button onclick="del('financeiro', ${f.id})">🗑️</button></td>
-            </tr>`;
+            lista.innerHTML += `<tr><td>${dataFormat}</td><td>${f.desc}</td><td>${f.cat}</td><td>R$ ${f.valor.toFixed(2)}</td><td><button onclick="del('financeiro', ${f.id})">🗑️</button></td></tr>`;
         });
 
         document.getElementById('bi-receita').innerText = `R$ ${r.toFixed(2)}`;
         document.getElementById('bi-despesa').innerText = `R$ ${d.toFixed(2)}`;
         document.getElementById('bi-lucro').innerText = `R$ ${(r-d).toFixed(2)}`;
-        
         const top = Object.keys(cats).reduce((a, b) => cats[a] > cats[b] ? a : b, "-");
-        document.getElementById('bi-top').innerText = top !== "-" ? `${top} (R$ ${cats[top].toFixed(2)})` : "-";
+        document.getElementById('bi-top').innerText = top;
 
-        // Frequência
         const corpoP = document.getElementById('corpo-presenca');
         corpoP.innerHTML = '';
         const cores = { P: '#27ae60', F: '#e74c3c', D: '#7f8c8d', R: '#f39c12' };
-        
         db.presenca.forEach(p => {
-            const dFormat = p.data.split('-').reverse().join('/');
             corpoP.innerHTML += `<tr>
-                <td>${dFormat}</td>
+                <td>${p.data.split('-').reverse().join('/')}</td>
                 <td><strong>${p.aluno}</strong></td>
-                <td>
-                    <select onchange="updatePres(${p.id}, 'status', this.value)" class="status-select" style="background:${cores[p.status]}">
-                        <option value="P" ${p.status==='P'?'selected':''}>P</option>
-                        <option value="F" ${p.status==='F'?'selected':''}>F</option>
-                        <option value="D" ${p.status==='D'?'selected':''}>D</option>
-                        <option value="R" ${p.status==='R'?'selected':''}>R</option>
-                    </select>
-                </td>
-                <td><input type="text" value="${p.obs}" onblur="updatePres(${p.id}, 'obs', this.value)" style="width:100%; border:none; background:transparent;" placeholder="..."></td>
+                <td><select onchange="updatePres(${p.id}, 'status', this.value)" class="status-select" style="background:${cores[p.status]}">
+                    <option value="P" ${p.status==='P'?'selected':''}>P</option>
+                    <option value="F" ${p.status==='F'?'selected':''}>F</option>
+                    <option value="D" ${p.status==='D'?'selected':''}>D</option>
+                    <option value="R" ${p.status==='R'?'selected':''}>R</option>
+                </select></td>
+                <td><input type="text" value="${p.obs}" onblur="updatePres(${p.id}, 'obs', this.value)" style="width:100%; border:none; background:transparent;"></td>
                 <td><button onclick="del('presenca', ${p.id})">🗑️</button></td>
             </tr>`;
         });
-
-        if(document.getElementById('grid-agenda').innerHTML === '') initAgenda();
-    }
-
-    // --- PDF E AUXILIARES ---
-    function exportFrequenciaPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.text("Studio Florescer - Relatório de Reposições e Faltas", 14, 15);
-        const rows = db.presenca.map(p => [p.data.split('-').reverse().join('/'), p.aluno, p.status, p.obs]);
-        doc.autoTable({ head: [['Data', 'Aluno', 'Status', 'Observação']], body: rows, startY: 20 });
-        doc.save('frequencia_studio.pdf');
-    }
-
-    function exportFinanceiroPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        doc.text("Studio Florescer - Extrato Financeiro", 14, 15);
-        const rows = db.financeiro.map(f => [f.data.split('-').reverse().join('/'), f.desc, f.cat, `R$ ${f.valor.toFixed(2)}`]);
-        doc.autoTable({ head: [['Data', 'Descrição', 'Categoria', 'Valor']], body: rows, startY: 20 });
-        doc.save('financeiro_studio.pdf');
+        initAgenda();
     }
 
     function initAgenda() {
         const g = document.getElementById('grid-agenda');
         g.innerHTML = '';
         const dias = ['Hora', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
-        dias.forEach(d => g.innerHTML += `<div style="background:var(--bordo);color:white;padding:10px;text-align:center;font-weight:bold;font-size:0.8rem;">${d}</div>`);
+        dias.forEach(d => g.innerHTML += `<div style="background:var(--bordo);color:white;padding:10px;text-align:center;font-weight:bold;">${d}</div>`);
         for(let h=7; h<=19; h++) {
             g.innerHTML += `<div style="background:#eee;padding:10px;text-align:center;font-weight:bold;">${h}h</div>`;
             for(let d=1; d<=5; d++) {
                 const id = `c-${h}-${d}`;
-                g.innerHTML += `<div contenteditable="true" onblur="db.agenda['${id}']=this.innerText; saveLocal();" style="background:white;padding:8px;min-height:45px;font-size:0.75rem;">${db.agenda[id]||''}</div>`;
+                g.innerHTML += `<div contenteditable="true" onblur="db.agenda['${id}']=this.innerText; saveLocal();" style="background:white;padding:8px;min-height:45px;font-size:0.75rem; border-bottom: 1px solid #eee;">${db.agenda[id]||''}</div>`;
             }
         }
     }
 
     function save() { saveLocal(); renderAll(); }
     function saveLocal() { localStorage.setItem('florescer_full_db', JSON.stringify(db)); }
-    function del(path, id) { if(confirm("Excluir definitivamente?")) { db[path] = db[path].filter(x => x.id !== id); save(); } }
+    function del(path, id) { if(confirm("Excluir?")) { db[path] = db[path].filter(x => x.id !== id); save(); } }
     
     function show(id) { 
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('nav li').forEach(l => l.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         if(event) event.currentTarget.classList.add('active');
+        if(window.innerWidth <= 992) toggleMenu();
     }
 
     function limparFiltros() {
@@ -351,15 +344,9 @@
         renderAll();
     }
 
-    // --- FUNÇÕES DE BACKUP ---
     function exportBackup() {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", "backup_studio_florescer_" + Date.now() + ".json");
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
+        const a = document.createElement('a'); a.href = dataStr; a.download = "backup_studio.json"; a.click();
     }
 
     function importBackup(event) {
@@ -367,22 +354,27 @@
         if (!file) return;
         const reader = new FileReader();
         reader.onload = (e) => {
-            try {
-                const imported = JSON.parse(e.target.result);
-                // Validação básica para ver se o arquivo é um backup válido
-                if (imported.financeiro && imported.presenca) {
-                    db = imported;
-                    saveLocal();
-                    alert("Dados importados com sucesso! O sistema será reiniciado.");
-                    location.reload();
-                } else {
-                    alert("Arquivo de backup inválido.");
-                }
-            } catch (err) {
-                alert("Erro ao ler o arquivo. Certifique-se de que é um arquivo .json válido.");
-            }
+            db = JSON.parse(e.target.result);
+            saveLocal();
+            location.reload();
         };
         reader.readAsText(file);
+    }
+
+    function exportFrequenciaPDF() {
+        const { jsPDF } = window.jspdf; const doc = new jsPDF();
+        doc.text("Relatorio Frequencia - Studio Florescer", 14, 15);
+        const rows = db.presenca.map(p => [p.data.split('-').reverse().join('/'), p.aluno, p.status, p.obs]);
+        doc.autoTable({ head: [['Data', 'Aluno', 'Status', 'Obs']], body: rows, startY: 20 });
+        doc.save('frequencia.pdf');
+    }
+
+    function exportFinanceiroPDF() {
+        const { jsPDF } = window.jspdf; const doc = new jsPDF();
+        doc.text("Extrato Financeiro - Studio Florescer", 14, 15);
+        const rows = db.financeiro.map(f => [f.data.split('-').reverse().join('/'), f.desc, f.cat, `R$ ${f.valor.toFixed(2)}`]);
+        doc.autoTable({ head: [['Data', 'Desc', 'Cat', 'Valor']], body: rows, startY: 20 });
+        doc.save('financeiro.pdf');
     }
 
     window.onload = () => { if(sessionStorage.getItem('isLoggedIn') === 'true') checkLogin(); };
